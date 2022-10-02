@@ -1,0 +1,59 @@
+body {
+    background-color: rgb(120,120,140);
+    font-family:sans-serif;
+    padding: 0;
+    margin:0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.file-drag {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+}
+.box {
+    width: 95%;
+    margin-top: 3%;
+    margin-left:2.5%;
+    background-color: rgb(160,120,120);
+    box-shadow: 10px 10px rgb(120,80,80);
+}
+
+.info {
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.votes {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+button {
+    background-color: rgb(120,80,80);
+    border: 0;
+    color: white;
+    cursor: pointer;
+    height: 25px;
+}
+
+input {
+    background-color: rgb(120,80,80);
+    color: white;
+    border: 0;
+    border-bottom: 2px solid black;
+    width: 90%;
+    margin-left: 5%;
+}
+
+p {
+    text-align: center;
+}
