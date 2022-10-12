@@ -22,6 +22,6 @@ All requirements below must be met in order to pass this lecture.
 
 ## Hand-ins
 
-- 01.11.2022  23:59 (CET) first hand-in
+- 01.11.2022  23:59 (CET) first hand-in 
 - 13.12.2022  23:59 (CET) Second hand-in (email to thomas.bocek-at-ost.ch)
 - 14.12.2022  Presentation 10-15 min,  Demo 5-10 min, and the Q&A will be 5-10 min.
