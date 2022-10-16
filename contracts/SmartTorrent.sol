@@ -2,8 +2,11 @@
 
 pragma solidity ^0.8.17;
 
+import "TorrentBlackList.sol";
+
 contract SmartTorrent {
     enum TorrentCategory { MALWARE, COPYRIGHTED }
+    TorrentBlackList blackList;
 
     mapping(bytes32 => Proposal) internal proposals;
 
@@ -11,6 +14,10 @@ contract SmartTorrent {
         uint256 creationTimestamp;
         mapping(address => bool) voted;
         mapping(TorrentCategory => uint) votes;
+    }
+
+    constructor (address _blacklist) {
+        blackList = TorrentBlackList(_blacklist);
     }
 
     function vote(bytes32 _torrentHash, TorrentCategory _category) public {
@@ -22,4 +29,21 @@ contract SmartTorrent {
         }
         proposals[_torrentHash].votes[_category]++;
     }
+
+    function evaluateVoting(bytes32 _torrentHash) public {
+        uint malwareCounter = proposals[_torrentHash].votes[TorrentCategory.MALWARE];
+        uint copyrightedCounter = proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED];
+        TorrentBlackList.EntryCategory entryCategory;
+
+        if (malwareCounter == copyrightedCounter) {
+            entryCategory = TorrentBlackList.EntryCategory.MALEWAREANDCOPYRIGHT;
+        } else if (malwareCounter > copyrightedCounter) {
+            entryCategory = TorrentBlackList.EntryCategory.MALWARE;
+        } else {
+            entryCategory = TorrentBlackList.EntryCategory.COPYRIGHTED;
+        }
+        
+        blackList.addCategoryToEntry(_torrentHash, entryCategory);
+    }
 }
+
