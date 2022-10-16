@@ -8,7 +8,7 @@ contract SmartTorrent {
     enum TorrentCategory { MALWARE, COPYRIGHTED }
     TorrentBlackList blackList;
 
-    uint constant voteCountThreshold = 0;
+    uint constant voteCountThreshold = 2;
     uint256 constant voteTimeThreshold = 18000; // seconds = 5h
 
     mapping(bytes32 => Proposal) internal proposals;
