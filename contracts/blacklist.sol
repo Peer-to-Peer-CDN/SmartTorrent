@@ -16,7 +16,7 @@ contract TorrentBlackList {
     mapping (bytes32 => EntryCategory) entries;
 
     function addCategoryToEntry(bytes32 hash, EntryCategory category) external {
-        require(msg.sender == ownerContract);
+        require(msg.sender != ownerContract, "not owner");
 
         uint8 currentCat = uint8(entries[hash]);
         uint8 newCat = uint8(category);
