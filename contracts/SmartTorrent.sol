@@ -8,6 +8,9 @@ contract SmartTorrent {
     enum TorrentCategory { MALWARE, COPYRIGHTED }
     TorrentBlackList blackList;
 
+    uint constant voteCountThreshold = 0;
+    uint256 constant voteTimeThreshold = 18000; // seconds = 5h
+
     mapping(bytes32 => Proposal) internal proposals;
 
     struct Proposal {
@@ -28,22 +31,29 @@ contract SmartTorrent {
             proposals[_torrentHash].creationTimestamp = block.timestamp;
         }
         proposals[_torrentHash].votes[_category]++;
+
+        evaluateVoting(_torrentHash);
     }
 
-    function evaluateVoting(bytes32 _torrentHash) public {
+    function evaluateVoting(bytes32 _torrentHash) internal {
+        require(proposals[_torrentHash].creationTimestamp != 0, "creation timestamp not set");
+        require(blackList.getEntry(_torrentHash) == TorrentBlackList.EntryCategory.NOTLISTED, "hash already on blacklist");
+
+        TorrentBlackList.EntryCategory entryCategory;
         uint malwareCounter = proposals[_torrentHash].votes[TorrentCategory.MALWARE];
         uint copyrightedCounter = proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED];
-        TorrentBlackList.EntryCategory entryCategory;
-
-        if (malwareCounter == copyrightedCounter) {
-            entryCategory = TorrentBlackList.EntryCategory.MALEWAREANDCOPYRIGHT;
-        } else if (malwareCounter > copyrightedCounter) {
-            entryCategory = TorrentBlackList.EntryCategory.MALWARE;
-        } else {
-            entryCategory = TorrentBlackList.EntryCategory.COPYRIGHTED;
-        }
         
-        blackList.addCategoryToEntry(_torrentHash, entryCategory);
+        if (malwareCounter + copyrightedCounter > voteCountThreshold && block.timestamp - proposals[_torrentHash].creationTimestamp > voteTimeThreshold) {
+            if (malwareCounter == copyrightedCounter) {
+                entryCategory = TorrentBlackList.EntryCategory.MALEWAREANDCOPYRIGHT;
+            } else if (malwareCounter > copyrightedCounter) {
+                entryCategory = TorrentBlackList.EntryCategory.MALWARE;
+            } else {
+                entryCategory = TorrentBlackList.EntryCategory.COPYRIGHTED;
+            }
+        
+            blackList.addCategoryToEntry(_torrentHash, entryCategory);
+        }
     }
 }
 
