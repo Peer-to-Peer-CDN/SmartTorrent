@@ -17,11 +17,14 @@ h1 {
   align-content: center;
   width: 90%;
   border: 2px solid #000;
+  margin-left: auto;
+  margin-right: auto;
 }
 .box {
-  width: 95%;
+  width: 90%;
   margin-top: 3%;
-  margin-left:2.5%;
+  margin-left:auto;
+  margin-right:auto;
   background-color: rgb(160,120,120);
   box-shadow: 10px 10px rgb(120,80,80);
 }
@@ -58,4 +61,19 @@ input {
 
 p {
   text-align: center;
+}
+
+.connect-btn {
+  background-color: rgb(120,80,80);
+  color: white;
+  cursor: pointer;
+  height: 50px;
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+  width: 100%;
+  display: flex;
 }
