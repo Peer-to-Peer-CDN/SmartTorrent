@@ -76,4 +76,9 @@ p {
 .container {
   width: 100%;
   display: flex;
+  flex-direction: column;
+}
+
+#voting-box, #torrent-box{
+  visibility: hidden;
 }

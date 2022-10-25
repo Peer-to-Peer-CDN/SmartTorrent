@@ -1,5 +1,5 @@
 
-const voteCopyrighted = () => {
+const voteCopyrighted = (value) => {
 	alert("You voted for copyrighted!");
 
 }
