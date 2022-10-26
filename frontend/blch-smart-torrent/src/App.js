@@ -6,6 +6,8 @@ import voteMalware from "./components/voteMalware";
 import voteCopyrighted from "./components/voteCopyrighted";
 import parseTorrent from "parse-torrent";
 import { useEffect } from "react";
+import detectEthereumProvider from '@metamask/detect-provider'
+
 
 
 const App = () => {
@@ -40,10 +42,13 @@ const App = () => {
     }
   });
 
+  
   const connectMetamask = async () => {
-    if (window.ethereum) {
+    const provider = await detectEthereumProvider();
+    if (provider) {
       try {
         let result = await window.ethereum.enable();
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
         setWalletId(result[0]);
         console.log("Metamask connected");
         document.querySelector("#voting-box").style.visibility = "visible";
@@ -60,6 +65,20 @@ const App = () => {
       console.log("Metamask not installed");
     }
   };
+
+
+  // For now, 'eth_accounts' will continue to always return an array
+  function handleAccountsChanged(accounts) {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask.');
+    } else if (accounts[0] !== walletId) {
+      setWalletId(accounts[0]);
+      // Do any other work!
+    }
+  }
+
+
 
   return (
     <div>
