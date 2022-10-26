@@ -35,6 +35,10 @@ contract SmartTorrent {
         evaluateVoting(_torrentHash);
     }
 
+    function getVotesAmount(bytes32 _torrentHash, TorrentCategory _category) external view returns (uint) {
+        return proposals[_torrentHash].votes[_category];
+    }
+
     function evaluateVoting(bytes32 _torrentHash) internal {
         require(proposals[_torrentHash].creationTimestamp != 0, "creation timestamp not set");
         require(blackList.getEntry(_torrentHash) == TorrentBlackList.EntryCategory.NOTLISTED, "hash already on blacklist");
