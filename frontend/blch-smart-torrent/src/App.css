@@ -78,7 +78,17 @@ p {
   display: flex;
   flex-direction: column;
 }
+#torrent-box {
+  margin: 30px;
+}
 
 #voting-box, #torrent-box{
   visibility: hidden;
+}
+
+.vote {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

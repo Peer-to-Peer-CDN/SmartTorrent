@@ -36,8 +36,7 @@ const App = () => {
         let buffer = Buffer.from(reader.result);
         let parsedTorrent = parseTorrent(buffer);
         setHash(parsedTorrent.infoHash);
-        setCopyrightVotes(getVotes(hash, 1));
-        setMalwareVotes(getVotes(hash, 0));
+        
       };
 
       reader.readAsArrayBuffer(filesFiltered[0]);
@@ -103,13 +102,13 @@ const App = () => {
         <div className="votes">
           {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 1)}>
-            Vote!
+            Vote Copyrighted!
           </button>
         </div>
         <div className="votes">
           {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 0)}>
-            Vote!
+            Vote Malware!
           </button>
         </div>
       </section>
