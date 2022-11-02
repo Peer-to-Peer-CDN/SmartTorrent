@@ -2,7 +2,7 @@ const vote = (hash, category) => {
     if (window.ethereum.isConnected()) {
         const transactionParameters = {
             gas: '0x249F0',
-            to: '0xd93a2251336835cDD31bdac9158c0aA7226Ed25f',
+            to: '0x8b3a97d63286d979d792182c85800C1E8026631E',
             from: window.ethereum.selectedAddress,
             value: '0x00',
             data: '0xc9a28cb9' + getZeros(24) + hash + getZeros(63) + category
