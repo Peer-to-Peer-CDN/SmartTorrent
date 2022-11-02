@@ -98,7 +98,7 @@ const App = () => {
 
         <div className="votes">
           <p>Votes for Copyrighted: X</p>
-          <button className="vote" onClick={voteCopyrighted}>
+          <button className="vote" onClick={() => voteCopyrighted(hash, 1)}>
             Vote!
           </button>
         </div>
