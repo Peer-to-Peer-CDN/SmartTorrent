@@ -35,10 +35,6 @@ contract SmartTorrent {
         evaluateVoting(_torrentHash);
     }
 
-    function getVotesAmount(bytes32 _torrentHash, TorrentCategory _category) external view returns (uint) {
-        return proposals[_torrentHash].votes[_category];
-    }
-
     function evaluateVoting(bytes32 _torrentHash) internal {
         require(proposals[_torrentHash].creationTimestamp != 0, "creation timestamp not set");
         require(blackList.getEntry(_torrentHash) == TorrentBlackList.EntryCategory.NOTLISTED, "hash already on blacklist");
@@ -59,5 +55,12 @@ contract SmartTorrent {
             blackList.addCategoryToEntry(_torrentHash, entryCategory);
         }
     }
-}
 
+    function getVotesAmount(bytes32 _torrentHash) external view returns (uint[] memory) {
+        uint[] memory votingArray = new uint[](2);
+        votingArray[0] = proposals[_torrentHash].votes[TorrentCategory.MALWARE];
+        votingArray[1] = proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED];
+
+        return votingArray;
+    }
+}
