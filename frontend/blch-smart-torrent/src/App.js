@@ -7,6 +7,7 @@ import parseTorrent from "parse-torrent";
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
 import getVotes from "./components/getVotes";
+import { toast } from "react-hot-toast";
 
 
 const App = () => {
@@ -29,14 +30,13 @@ const App = () => {
 
     if (filesFiltered.length > 0) {
       const reader = new FileReader();
-
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
+      reader.onabort = () => toast.error("file reading was aborted");
+      reader.onerror = () => toast.error("file reading has failed");
       reader.onloadend = () => {
         let buffer = Buffer.from(reader.result);
         let parsedTorrent = parseTorrent(buffer);
         setHash(parsedTorrent.infoHash);
-        
+        toast.success("Torrent file loaded successfully");
       };
 
       reader.readAsArrayBuffer(filesFiltered[0]);
@@ -53,19 +53,18 @@ const App = () => {
         let result = await window.ethereum.enable();
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         setWalletId(result[0]);
-        console.log("Metamask connected");
+        toast.success("Metamask connected");
         document.querySelector("#voting-box").style.visibility = "visible";
         document.querySelector("#torrent-box").style.visibility = "visible";
 
-
       } catch (error) {
-        console.log("User denied account access");
+        toast.error("User denied account access");
         document.querySelector("#voting-box").style.visibility = "hidden";
         document.querySelector("#torrent-box").style.visibility = "hidden";
 
       }
     } else {
-      console.log("Metamask not installed");
+      toast.error("Metamask not installed");
     }
   };
 
@@ -74,7 +73,7 @@ const App = () => {
   function handleAccountsChanged(accounts) {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
-      console.log('Please connect to MetaMask.');
+      toast.error('Please connect to MetaMask.');
     } else if (accounts[0] !== walletId) {
       setWalletId(accounts[0]);
       // Do any other work!
@@ -86,7 +85,6 @@ const App = () => {
   return (
     <div>
       <h1>Smart Torrent Hub</h1>
-
       <div className="container">
         <button className="connect-btn" onClick={connectMetamask}>
           Connect Metamask

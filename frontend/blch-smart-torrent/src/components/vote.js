@@ -1,4 +1,4 @@
-const vote = (hash, category) => {
+const vote = async (hash, category) => {
     if (window.ethereum.isConnected()) {
         const transactionParameters = {
             gas: '0x249F0',
@@ -8,10 +8,21 @@ const vote = (hash, category) => {
             data: '0xc9a28cb9' + getZeros(24) + hash + getZeros(63) + category
         }
 
-        window.ethereum.request({
-            method: "eth_sendTransaction",
-            params: [transactionParameters]
-        });
+        try {
+            document.querySelector("#progress-bar").variant = "warning";
+            document.querySelector("#progress-bar").now = 40;
+            await window.ethereum.request({
+                method: "eth_sendTransaction",
+                params: [transactionParameters]
+            });
+            document.querySelector("#progress-bar").variant = "success";
+            document.querySelector("#progress-bar").now = 100;
+        } catch (error) {
+            document.querySelector("#progress-bar").now = 0;
+            document.querySelector("#progress-bar").variant = "danger";
+
+        }
+        
     }
 }
 
