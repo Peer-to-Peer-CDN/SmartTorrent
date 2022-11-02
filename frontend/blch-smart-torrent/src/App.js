@@ -2,8 +2,7 @@ import "./App.css";
 import React from "react";
 import { useState } from "react";
 import Dropzone from "./components/dropzone";
-import voteMalware from "./components/voteMalware";
-import voteCopyrighted from "./components/voteCopyrighted";
+import vote from "./components/vote"
 import parseTorrent from "parse-torrent";
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -98,13 +97,13 @@ const App = () => {
 
         <div className="votes">
           <p>Votes for Copyrighted: X</p>
-          <button className="vote" onClick={() => voteCopyrighted(hash, 1)}>
+          <button className="vote" onClick={() => vote(hash, 1)}>
             Vote!
           </button>
         </div>
         <div className="votes">
           <p>Votes for Maleware: X</p>
-          <button className="vote" onClick={voteMalware}>
+          <button className="vote" onClick={() => vote(hash, 0)}>
             Vote!
           </button>
         </div>
