@@ -6,16 +6,19 @@ import vote from "./components/vote"
 import parseTorrent from "parse-torrent";
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
-
+import getVotes from "./components/getVotes";
 
 
 const App = () => {
   const [hash, setHash] = useState("hash");
   const [walletId, setWalletId] = useState("wallet-id");
-
+  const [malwareVotes, setMalwareVotes] = useState("malware-votes");
+  const [copyrightVotes, setCopyrightVotes] = useState("copyright-votes");
   useEffect(() => {
     setHash("");
     setWalletId("");
+    setMalwareVotes("");
+    setCopyrightVotes("");
   }, []);
 
   const dragDrop = require("drag-drop");
@@ -33,6 +36,8 @@ const App = () => {
         let buffer = Buffer.from(reader.result);
         let parsedTorrent = parseTorrent(buffer);
         setHash(parsedTorrent.infoHash);
+        setCopyrightVotes(getVotes(hash, 1));
+        setMalwareVotes(getVotes(hash, 0));
       };
 
       reader.readAsArrayBuffer(filesFiltered[0]);
@@ -41,7 +46,7 @@ const App = () => {
     }
   });
 
-  
+
   const connectMetamask = async () => {
     const provider = await detectEthereumProvider();
     if (provider) {
@@ -96,13 +101,13 @@ const App = () => {
       <section id="voting-box" className="info box">
 
         <div className="votes">
-          <p>Votes for Copyrighted: X</p>
+          {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 1)}>
             Vote!
           </button>
         </div>
         <div className="votes">
-          <p>Votes for Maleware: X</p>
+          {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 0)}>
             Vote!
           </button>
