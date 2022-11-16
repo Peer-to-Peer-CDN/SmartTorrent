@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
 import getVotes from "./components/getVotes";
 import { toast } from "react-hot-toast";
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
 
 
 const App = () => {
@@ -80,7 +82,7 @@ const App = () => {
     }
   }
 
-
+  const now = 60;
 
   return (
     <div>
@@ -95,8 +97,10 @@ const App = () => {
         <Dropzone />
         <p>{hash.length > 0 ? "File hash: " + hash : ""}</p>
       </section>
+      <section id="voting-status">
+        <ProgressBar now={now} label={`${now}%`} />
+      </section>
       <section id="voting-box" className="info box">
-
         <div className="votes">
           {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 1)}>

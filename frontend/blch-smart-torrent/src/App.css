@@ -92,3 +92,8 @@ p {
   flex-direction: column;
   justify-content: center;
 }
+
+.voting-status {
+  text-align: center;
+  width: 100%;
+}

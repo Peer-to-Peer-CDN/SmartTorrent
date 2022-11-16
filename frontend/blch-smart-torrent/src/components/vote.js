@@ -9,17 +9,17 @@ const vote = async (hash, category) => {
         }
 
         try {
-            document.querySelector("#progress-bar").variant = "warning";
-            document.querySelector("#progress-bar").now = 40;
+            // document.querySelector("#progress-bar").variant = "warning";
+            // document.querySelector("#progress-bar").now = 40;
             await window.ethereum.request({
                 method: "eth_sendTransaction",
                 params: [transactionParameters]
             });
-            document.querySelector("#progress-bar").variant = "success";
-            document.querySelector("#progress-bar").now = 100;
+            // document.querySelector("#progress-bar").variant = "success";
+            // document.querySelector("#progress-bar").now = 100;
         } catch (error) {
-            document.querySelector("#progress-bar").now = 0;
-            document.querySelector("#progress-bar").variant = "danger";
+            // document.querySelector("#progress-bar").now = 0;
+            // document.querySelector("#progress-bar").variant = "danger";
 
         }
         
