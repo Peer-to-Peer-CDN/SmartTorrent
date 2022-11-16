@@ -1,8 +1,8 @@
 body {
-  background-color: rgb(120,120,140);
-  font-family:sans-serif;
+  background-color: rgb(120, 120, 140) !important;
+  font-family: sans-serif;
   padding: 0;
-  margin:0;
+  margin: 0;
 }
 
 h1 {
@@ -23,10 +23,10 @@ h1 {
 .box {
   width: 90%;
   margin-top: 3%;
-  margin-left:auto;
-  margin-right:auto;
-  background-color: rgb(160,120,120);
-  box-shadow: 10px 10px rgb(120,80,80);
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(160, 120, 120);
+  box-shadow: 10px 10px rgb(120, 80, 80);
 }
 
 .info {
@@ -43,7 +43,7 @@ h1 {
 }
 
 button {
-  background-color: rgb(120,80,80);
+  background-color: rgb(120, 80, 80);
   border: 0;
   color: white;
   cursor: pointer;
@@ -51,7 +51,7 @@ button {
 }
 
 input {
-  background-color: rgb(120,80,80);
+  background-color: rgb(120, 80, 80);
   color: white;
   border: 0;
   border-bottom: 2px solid black;
@@ -64,7 +64,7 @@ p {
 }
 
 .connect-btn {
-  background-color: rgb(120,80,80);
+  background-color: rgb(120, 80, 80);
   color: white;
   cursor: pointer;
   height: 50px;
@@ -82,7 +82,8 @@ p {
   margin: 30px;
 }
 
-#voting-box, #torrent-box{
+#voting-box,
+#torrent-box {
   visibility: hidden;
 }
 
@@ -95,5 +96,9 @@ p {
 
 .voting-status {
   text-align: center;
-  width: 100%;
+  width: 70%;
+}
+
+.hidden {
+  display: none;
 }

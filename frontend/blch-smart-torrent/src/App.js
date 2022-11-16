@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
 import getVotes from "./components/getVotes";
 import { toast } from "react-hot-toast";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import ProgressBarCustom from "./components/ProgressBar";
 
 
 
@@ -58,7 +58,6 @@ const App = () => {
         toast.success("Metamask connected");
         document.querySelector("#voting-box").style.visibility = "visible";
         document.querySelector("#torrent-box").style.visibility = "visible";
-
       } catch (error) {
         toast.error("User denied account access");
         document.querySelector("#voting-box").style.visibility = "hidden";
@@ -82,8 +81,12 @@ const App = () => {
     }
   }
 
-  const now = 60;
-
+  const getBothVotes = async () => {
+    console.log("Getting votes");
+    console.log("Malware", getVotes(hash, 0));
+    console.log("Copyright", getVotes(hash, 1));
+  }
+  
   return (
     <div>
       <h1>Smart Torrent Hub</h1>
@@ -98,9 +101,15 @@ const App = () => {
         <p>{hash.length > 0 ? "File hash: " + hash : ""}</p>
       </section>
       <section id="voting-status">
-        <ProgressBar now={now} label={`${now}%`} />
+        <ProgressBarCustom/>
+      </section>
+      <section id="blacklisted-box" className="hidden">
+        <h2>Torrent is Blacklisted!</h2>
       </section>
       <section id="voting-box" className="info box">
+        <div className="votes">
+          <button className="vote" onClick={() => getBothVotes()}>Get votes</button>
+        </div>
         <div className="votes">
           {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <p></p>}
           <button className="vote" onClick={() => vote(hash, 1)}>
