@@ -82,11 +82,7 @@ contract SmartTorrent {
         }
     }
 
-    function getVotesAmount(bytes32 _torrentHash) external view returns (uint[] memory) {
-        uint[] memory votingArray = new uint[](2);
-        votingArray[0] = proposals[_torrentHash].votes[TorrentCategory.MALWARE];
-        votingArray[1] = proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED];
-
-        return votingArray;
+    function getVotesAmount(bytes32 _torrentHash, TorrentCategory category) external view returns (uint) {
+        return proposals[_torrentHash].votes[category];
     }
 }
