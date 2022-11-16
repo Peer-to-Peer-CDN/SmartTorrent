@@ -84,7 +84,9 @@ const App = () => {
 
   return (
     <div>
-      <h1>Smart Torrent Hub</h1>
+      <div class="logo-container">
+        <img class="logo" src="./SmartTorrent.png" />
+      </div>
       <div className="container">
         <button className="connect-btn" onClick={connectMetamask}>
           Connect Metamask

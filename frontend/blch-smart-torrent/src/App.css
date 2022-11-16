@@ -92,3 +92,14 @@ p {
   flex-direction: column;
   justify-content: center;
 }
+
+.logo-container {
+  width: 100%;
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.logo {
+  max-width: 500px;
+}
