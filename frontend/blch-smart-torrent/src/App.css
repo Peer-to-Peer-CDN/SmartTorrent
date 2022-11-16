@@ -93,6 +93,11 @@ p {
   justify-content: center;
 }
 
+.voting-status {
+  text-align: center;
+  width: 100%;
+}
+
 .logo-container {
   width: 100%;
   text-align: center;
