@@ -96,9 +96,20 @@ p {
 
 .voting-status {
   text-align: center;
-  width: 70%;
+  width: 100%;
 }
 
 .hidden {
   display: none;
+}
+
+.logo-container {
+  width: 100%;
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.logo {
+  max-width: 500px;
 }
