@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.17;
+pragma solidity >=0.7.0 <0.9.0;
 
 import "TorrentBlackList.sol";
 
@@ -8,13 +8,14 @@ contract SmartTorrent {
     enum TorrentCategory { MALWARE, COPYRIGHTED }
     TorrentBlackList blackList;
 
-    uint constant voteCountThreshold = 2;
-    uint256 constant voteTimeThreshold = 18000; // seconds = 5h
+    uint constant voteCountThreshold = 3; // 3 votes for testnet/demo. On mainnet, change to 15 votes
+    uint256 constant voteTimeThreshold = 60; // 60s for testnet/demo. On mainnet, change to 86400s
 
     mapping(bytes32 => Proposal) internal proposals;
 
     struct Proposal {
-        uint256 creationTimestamp;
+        uint256 lastVoteTimestamp;
+        address[] voters;
         mapping(address => bool) voted;
         mapping(TorrentCategory => uint) votes;
     }
@@ -27,32 +28,57 @@ contract SmartTorrent {
         require(!proposals[_torrentHash].voted[msg.sender], "already voted");
 
         proposals[_torrentHash].voted[msg.sender] = true;
-        if (proposals[_torrentHash].creationTimestamp == 0) { 
-            proposals[_torrentHash].creationTimestamp = block.timestamp;
-        }
+        proposals[_torrentHash].voters.push(msg.sender);
         proposals[_torrentHash].votes[_category]++;
+        if (proposals[_torrentHash].lastVoteTimestamp == 0) {
+            proposals[_torrentHash].lastVoteTimestamp = block.timestamp;
+        }
 
-        evaluateVoting(_torrentHash);
+        evaluateVoting(_torrentHash, _category);
     }
 
-    function evaluateVoting(bytes32 _torrentHash) internal {
-        require(proposals[_torrentHash].creationTimestamp != 0, "creation timestamp not set");
+    function evaluateVoting(bytes32 _torrentHash, TorrentCategory currentCategory) internal {
+        require(proposals[_torrentHash].lastVoteTimestamp != 0, "last vote timestamp not set");
         require(blackList.getEntry(_torrentHash) == TorrentBlackList.EntryCategory.NOTLISTED, "hash already on blacklist");
 
-        TorrentBlackList.EntryCategory entryCategory;
         uint malwareCounter = proposals[_torrentHash].votes[TorrentCategory.MALWARE];
         uint copyrightedCounter = proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED];
-        
-        if (malwareCounter + copyrightedCounter > voteCountThreshold && block.timestamp - proposals[_torrentHash].creationTimestamp > voteTimeThreshold) {
-            if (malwareCounter == copyrightedCounter) {
-                entryCategory = TorrentBlackList.EntryCategory.MALEWAREANDCOPYRIGHT;
-            } else if (malwareCounter > copyrightedCounter) {
-                entryCategory = TorrentBlackList.EntryCategory.MALWARE;
-            } else {
-                entryCategory = TorrentBlackList.EntryCategory.COPYRIGHTED;
-            }
-        
-            blackList.addCategoryToEntry(_torrentHash, entryCategory);
+        uint timeSinceLastVoting = block.timestamp - proposals[_torrentHash].lastVoteTimestamp;
+
+        if (malwareCounter + copyrightedCounter >= voteCountThreshold && timeSinceLastVoting <= voteTimeThreshold) {
+            addHashToBlacklist(_torrentHash, malwareCounter, copyrightedCounter);
+        } else if (timeSinceLastVoting > voteTimeThreshold) { // restart voting
+            restartVoting(_torrentHash, currentCategory);
+        }
+
+        proposals[_torrentHash].lastVoteTimestamp = block.timestamp;
+    }
+
+    function addHashToBlacklist(bytes32 _torrentHash, uint malwareCounter, uint copyrightedCounter) internal {
+        TorrentBlackList.EntryCategory entryCategory;
+
+        if (malwareCounter == copyrightedCounter) {
+            entryCategory = TorrentBlackList.EntryCategory.MALEWAREANDCOPYRIGHT;
+        } else if (malwareCounter > copyrightedCounter) {
+            entryCategory = TorrentBlackList.EntryCategory.MALWARE;
+        } else {
+            entryCategory = TorrentBlackList.EntryCategory.COPYRIGHTED;
+        }
+
+        blackList.addCategoryToEntry(_torrentHash, entryCategory);
+    }
+
+    function restartVoting(bytes32 _torrentHash, TorrentCategory currentCategory) internal {
+        for (uint i = 0; i < proposals[_torrentHash].voters.length; i++) {
+            proposals[_torrentHash].voted[proposals[_torrentHash].voters[i]] = false;
+        }
+
+        if (currentCategory == TorrentCategory.MALWARE) {
+            proposals[_torrentHash].votes[TorrentCategory.MALWARE] = 1;
+            proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED] = 0;
+        } else {
+            proposals[_torrentHash].votes[TorrentCategory.MALWARE] = 0;
+            proposals[_torrentHash].votes[TorrentCategory.COPYRIGHTED] = 1;
         }
     }
 
