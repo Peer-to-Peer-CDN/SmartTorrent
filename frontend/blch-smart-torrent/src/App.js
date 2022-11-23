@@ -47,7 +47,6 @@ const App = () => {
     }
   });
 
-
   const connectMetamask = async () => {
     const provider = await detectEthereumProvider();
     if (provider) {
@@ -83,10 +82,20 @@ const App = () => {
 
   const getBothVotes = async () => {
     console.log("Getting votes");
-    console.log("Malware", getVotes(hash, 0));
-    console.log("Copyright", getVotes(hash, 1));
+    getVotes(hash, 1).then((result) => {
+      console.log("Malware", result);
+      // setMalwareVotes(result);
+    });
+    setTimeout(() => {
+
+      getVotes(hash, 2).then((result) => {
+        console.log("Copyright", result);
+        // setCopyrightVotes(result);
+      });
+    }, 1000);
+
   }
-  
+
   return (
     <div>
       <div class="logo-container">
@@ -103,7 +112,7 @@ const App = () => {
         <p>{hash.length > 0 ? "File hash: " + hash : ""}</p>
       </section>
       <section id="voting-status">
-        <ProgressBarCustom/>
+        <ProgressBarCustom />
       </section>
       <section id="blacklisted-box" className="hidden">
         <h2>Torrent is Blacklisted!</h2>
@@ -113,13 +122,11 @@ const App = () => {
           <button className="vote" onClick={() => getBothVotes()}>Get votes</button>
         </div>
         <div className="votes">
-          {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <p></p>}
-          <button className="vote" onClick={() => vote(hash, 1)}>
-            Vote Copyrighted!
-          </button>
+          {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <></>}
+          <button className="vote" onClick={() => vote(hash, 1)}>Vote Copyrighted!</button>
         </div>
         <div className="votes">
-          {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <p></p>}
+          {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <></>}
           <button className="vote" onClick={() => vote(hash, 0)}>
             Vote Malware!
           </button>
