@@ -81,25 +81,21 @@ const App = () => {
   }
 
   const getBothVotes = async () => {
-    console.log("Getting votes");
-    getVotes(hash, 1).then((result) => {
-      console.log("Malware", result);
-      // setMalwareVotes(result);
+    // console.log("Getting votes");
+    getVotes(hash, 0).then((result) => {
+      // console.log("Malware", parseInt(result, 16));
+      setMalwareVotes("" + (parseInt(result, 16)));
     });
-    setTimeout(() => {
-
-      getVotes(hash, 2).then((result) => {
-        console.log("Copyright", result);
-        // setCopyrightVotes(result);
-      });
-    }, 1000);
-
+    getVotes(hash, 1).then((result) => {
+      // console.log("Copyright", parseInt(result, 16));
+      setCopyrightVotes("" + parseInt(result, 16));
+    });
   }
 
   return (
     <div>
       <div class="logo-container">
-        <img class="logo" src="./SmartTorrent.png" />
+        <img class="logo" src="./SmartTorrent.png" alt="logo" />
       </div>
       <div className="container">
         <button className="connect-btn" onClick={connectMetamask}>
