@@ -3,7 +3,6 @@ import React from "react";
 import { useState } from "react";
 import Dropzone from "./components/dropzone";
 import vote from "./components/vote"
-import parseTorrent from "parse-torrent";
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
 import getVotes from "./components/getVotes";
@@ -24,28 +23,6 @@ const App = () => {
     setCopyrightVotes("");
   }, []);
 
-  const dragDrop = require("drag-drop");
-  dragDrop("div", (files) => {
-    const filesFiltered = files.filter((file) => {
-      return file.name.match(/.*\.torrent/g) ? file : null;
-    });
-
-    if (filesFiltered.length > 0) {
-      const reader = new FileReader();
-      reader.onabort = () => toast.error("file reading was aborted");
-      reader.onerror = () => toast.error("file reading has failed");
-      reader.onloadend = () => {
-        let buffer = Buffer.from(reader.result);
-        let parsedTorrent = parseTorrent(buffer);
-        setHash(parsedTorrent.infoHash);
-        toast.success("Torrent file loaded successfully");
-      };
-
-      reader.readAsArrayBuffer(filesFiltered[0]);
-    } else {
-      console.log("No valid file dropped");
-    }
-  });
 
   const connectMetamask = async () => {
     const provider = await detectEthereumProvider();
@@ -104,7 +81,7 @@ const App = () => {
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
       <section id="torrent-box">
-        <Dropzone />
+        <Dropzone updateHash={setHash}/>
         <p>{hash.length > 0 ? "File hash: " + hash : ""}</p>
       </section>
       <section id="voting-status">
