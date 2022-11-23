@@ -98,8 +98,8 @@ const App = () => {
 
   return (
     <div>
-      <div class="logo-container">
-        <img class="logo" src="./SmartTorrent.png" />
+      <div className="logo-container">
+        <img className="logo" src="./SmartTorrent.png" />
       </div>
       <div className="container">
         <button className="connect-btn" onClick={connectMetamask}>
