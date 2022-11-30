@@ -34,7 +34,7 @@ function Dropzone({ updateHash }) {
     } else {
       console.log("No valid file dropped");
     }
-  }, []);
+  }, [updateHash]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (

@@ -5,10 +5,8 @@ import Dropzone from "./components/dropzone";
 import vote from "./components/vote"
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
-import {getVotes,isBlacklisted} from "./components/getVotes";
+import { getVotes, isBlacklisted } from "./components/getVotes";
 import { toast } from "react-hot-toast";
-import ProgressBarCustom from "./components/ProgressBar";
-
 
 
 const App = () => {
@@ -16,13 +14,20 @@ const App = () => {
   const [walletId, setWalletId] = useState("wallet-id");
   const [malwareVotes, setMalwareVotes] = useState("malware-votes");
   const [copyrightVotes, setCopyrightVotes] = useState("copyright-votes");
+  const [blacklistedReason,setBlacklistedReason] = useState("blacklisted-reason");
   useEffect(() => {
     setHash("");
     setWalletId("");
     setMalwareVotes("");
     setCopyrightVotes("");
+    setBlacklistedReason("");
   }, []);
 
+  const blacklistedReasonMap = {
+    1: "Malware",
+    2: "Copyright",
+    3: "Malware and Copyright",
+  };
 
   const connectMetamask = async () => {
     const provider = await detectEthereumProvider();
@@ -58,26 +63,25 @@ const App = () => {
   }
 
   const getBothVotes = async () => {
-    // console.log("Getting votes");
-    getVotes(hash, 0).then((result) => {
-      // console.log("Malware", parseInt(result, 16));
-      setMalwareVotes("" + (parseInt(result, 16)));
+    
+    isBlacklisted(hash).then((result) => {
+        console.log("Result", parseInt(result, 16));
+        let intResult = parseInt(result, 16);
+        if (intResult > 0) {
+          setBlacklistedReason(blacklistedReasonMap[intResult]);
+          document.querySelector("#voting-box").classList.toggle("hidden");
+          document.querySelector("#blacklisted-box").classList.toggle("hidden");
+        }else{
+          getVotes(hash, 0).then((result) => {
+            setMalwareVotes("" + (parseInt(result, 16)));
+          });
+          getVotes(hash, 1).then((result) => {
+            setCopyrightVotes("" + parseInt(result, 16));
+          });
+        }
     });
-    getVotes(hash, 1).then((result) => {
-      // console.log("Copyright", parseInt(result, 16));
-      setCopyrightVotes("" + parseInt(result, 16));
-    });
-    // isBlacklisted(hash).then((result) => {
-    //   if (result) {
-    //     toast.error("Torrent is blacklisted");
-    //     document.querySelector("#voting-box").classList.toggle( "hidden");
-    //     document.querySelector("#blacklisted-box").classList.toggle( "hidden");
-    //   } else {
-    //     toast.success("Torrent is not blacklisted");
-    //   }
-    // });
   }
-  console.log("Hash", hash);
+
   return (
     <div>
       <div class="logo-container">
@@ -90,27 +94,24 @@ const App = () => {
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
       <section id="torrent-box">
-        <Dropzone updateHash={setHash}/>
+        <Dropzone updateHash={setHash} />
       </section>
-      {/* <section id="voting-status">
-        <ProgressBarCustom />
-      </section> */}
-      <section id="blacklisted-box" className="hidden">
-        <h2>Torrent is Blacklisted!</h2>
+      <section id="blacklisted-box" className="hidden box blacklist">
+        <h2 className="blacklist">Torrent is Blacklisted for {blacklistedReason}!</h2>
       </section>
       <section id="voting-box" className="info box">
         <div className="votes">
           <button className="vote" onClick={() => getBothVotes()}>Get votes</button>
         </div>
         <div className="votes">
-          {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <></>}
           <button className="vote" onClick={() => vote(hash, 1)}>Vote Copyrighted!</button>
+          {copyrightVotes.length > 0 ? <p>Votes for Copyrighted: {copyrightVotes}</p> : <></>}
         </div>
         <div className="votes">
-          {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <></>}
           <button className="vote" onClick={() => vote(hash, 0)}>
             Vote Malware!
           </button>
+          {malwareVotes.length > 0 ? <p>Votes for Malware: {malwareVotes}</p> : <></>}
         </div>
       </section>
     </div>

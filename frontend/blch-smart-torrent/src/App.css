@@ -36,6 +36,13 @@ h1 {
   justify-content: space-around;
 }
 
+.blacklist {
+  align-items: center;
+  padding: 10px;
+  text-decoration: underline;
+  text-align: center;
+}
+
 .votes {
   display: flex;
   flex-direction: column;
