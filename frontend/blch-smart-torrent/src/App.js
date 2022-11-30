@@ -37,7 +37,6 @@ const App = () => {
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         setWalletId(result[0]);
         toast.success("Metamask connected");
-        document.querySelector("#voting-box").style.visibility = "visible";
         document.querySelector("#torrent-box").style.visibility = "visible";
       } catch (error) {
         toast.error("User denied account access");
@@ -81,8 +80,8 @@ const App = () => {
 
   return (
     <div>
-      <div class="logo-container">
-        <img class="logo" src="./SmartTorrent.png" alt="logo" />
+      <div className="logo-container">
+        <img className="logo" src="./SmartTorrent.png" alt="logo" />
       </div>
       <div className="container">
         <button className="connect-btn" onClick={connectMetamask}>

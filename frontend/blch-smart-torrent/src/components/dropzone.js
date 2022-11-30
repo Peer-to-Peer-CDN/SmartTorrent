@@ -28,6 +28,7 @@ function Dropzone({ updateHash }) {
         setHash(parsedTorrent.infoHash);
         updateHash(parsedTorrent.infoHash);
         toast.success("Torrent file loaded successfully");
+        document.querySelector("#voting-box").style.visibility = "visible";
       };
 
       reader.readAsArrayBuffer(filesFiltered[0]);
