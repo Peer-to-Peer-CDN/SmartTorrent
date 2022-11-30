@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 
 
-function Dropzone({ }) {
+function Dropzone({ updateHash }) {
   const [hash, setHash] = useState("hash");
 
   useEffect(() => {
@@ -26,6 +26,7 @@ function Dropzone({ }) {
         let buffer = Buffer.from(reader.result);
         let parsedTorrent = parseTorrent(buffer);
         setHash(parsedTorrent.infoHash);
+        updateHash(parsedTorrent.infoHash);
         toast.success("Torrent file loaded successfully");
       };
 

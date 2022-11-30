@@ -77,7 +77,7 @@ const App = () => {
     //   }
     // });
   }
-
+  console.log("Hash", hash);
   return (
     <div>
       <div class="logo-container">
@@ -90,7 +90,7 @@ const App = () => {
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
       <section id="torrent-box">
-        <Dropzone/>
+        <Dropzone updateHash={setHash}/>
       </section>
       {/* <section id="voting-status">
         <ProgressBarCustom />

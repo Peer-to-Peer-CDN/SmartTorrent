@@ -19,7 +19,7 @@ export const getVotes = async (hash, category) => {
 export const isBlacklisted = async (hash) => {
     if (window.ethereum.isConnected()) {
         const malwareTransactionParameters = {
-            to: '0x816197b9783cbe56a366152366e22d4ef9bd9892',
+            to: '0x7b89c0531005c7f4b1e8a4988ca607a073ef892c',
             data: '0x19c6268e' 
         }
         let result = await window.ethereum.request({
