@@ -39,7 +39,16 @@ Possible process of voting without a blacklist entry:
 
 ![sequence.png](./images/Sequence.png)
 
-# Contract information
+# Local Execution on Testnet 
+1. Deploy TorrentBlackList.sol to Goerli testnet (owner address needed)
+2. Deploy SmartTorrent.sol to Goerli testnet (blacklist address needed)
+3. Change the contract addresses in your project
+4. `npm install` in `.\frontend\blch-smart-torrent\`
+5. `npm start` in `.\frontend\blch-smart-torrent\`
+
+Step 1 - 3 can be skipped if the already deployed contracts should be used.
+
+## Contract information
 The app currently interacts with the following contracts on the Goerli testnet:
 - Owner: [0xf232b2993dDa9Bde0157DFCD091496Ff62C0CeBb](https://goerli.etherscan.io/address/0xf232b2993dda9bde0157dfcd091496ff62c0cebb)
 - BlackList
