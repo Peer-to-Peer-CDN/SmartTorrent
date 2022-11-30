@@ -5,7 +5,7 @@ import Dropzone from "./components/dropzone";
 import vote from "./components/vote"
 import { useEffect } from "react";
 import detectEthereumProvider from '@metamask/detect-provider'
-import getVotes from "./components/getVotes";
+import {getVotes,isBlacklisted} from "./components/getVotes";
 import { toast } from "react-hot-toast";
 import ProgressBarCustom from "./components/ProgressBar";
 
@@ -67,6 +67,15 @@ const App = () => {
       // console.log("Copyright", parseInt(result, 16));
       setCopyrightVotes("" + parseInt(result, 16));
     });
+    // isBlacklisted(hash).then((result) => {
+    //   if (result) {
+    //     toast.error("Torrent is blacklisted");
+    //     document.querySelector("#voting-box").classList.toggle( "hidden");
+    //     document.querySelector("#blacklisted-box").classList.toggle( "hidden");
+    //   } else {
+    //     toast.success("Torrent is not blacklisted");
+    //   }
+    // });
   }
 
   return (
@@ -81,12 +90,11 @@ const App = () => {
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
       <section id="torrent-box">
-        <Dropzone updateHash={setHash}/>
-        <p>{hash.length > 0 ? "File hash: " + hash : ""}</p>
+        <Dropzone/>
       </section>
-      <section id="voting-status">
+      {/* <section id="voting-status">
         <ProgressBarCustom />
-      </section>
+      </section> */}
       <section id="blacklisted-box" className="hidden">
         <h2>Torrent is Blacklisted!</h2>
       </section>

@@ -2,10 +2,16 @@ import React, { useCallback, useState } from "react";
 import parseTorrent from "parse-torrent";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 
-function Dropzone({ open }) {
+function Dropzone({ }) {
   const [hash, setHash] = useState("hash");
+
+  useEffect(() => {
+    setHash("");
+  }, []);
+
 
   const onDrop = useCallback(acceptedFiles => {
     const filesFiltered = acceptedFiles.filter((file) => {
@@ -20,7 +26,6 @@ function Dropzone({ open }) {
         let buffer = Buffer.from(reader.result);
         let parsedTorrent = parseTorrent(buffer);
         setHash(parsedTorrent.infoHash);
-        console.log(parsedTorrent.infoHash);
         toast.success("Torrent file loaded successfully");
       };
 
@@ -30,14 +35,13 @@ function Dropzone({ open }) {
     }
   }, []);
 
-
-  const { getRootProps, getInputProps } = useDropzone({onDrop});
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
     <div {...getRootProps({ className: "dropzone file-drag" })}>
       <input className="input-zone" {...getInputProps()} />
       <div className="text-center">
         <p className="dropzone-content">
-          Drop your torrent file here or click to select file
+          {hash.length > 0 ? "Torrent hash: " + hash : "Drop your torrent file here or click to select file"}
         </p>
       </div>
     </div>
