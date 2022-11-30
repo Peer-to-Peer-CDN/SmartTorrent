@@ -1,4 +1,5 @@
 import { getZeros } from "./vote";
+import { toast } from "react-hot-toast";
 
 export const getVotes = async (hash, category) => {
     if (window.ethereum.isConnected()) {
@@ -11,7 +12,10 @@ export const getVotes = async (hash, category) => {
             "method": "eth_call",
             "params": [malwareTransactionParameters, "latest"],
             "id": category
-        }).catch ((error) => { console.log(error); });
+        }).catch((error) => {
+            console.log(error);
+            toast.error("Error fetching votes");
+        });
         return result;
     }
 }
@@ -27,7 +31,10 @@ export const isBlacklisted = async (hash) => {
             "method": "eth_call",
             "params": [transactionParameters, "latest"],
             "id": 2
-        }).catch ((error) => { console.log(error); });
+        }).catch((error) => {
+            console.log(error);
+            toast.error("Error fetching blacklisted status");
+        });
         return result;
     }
 }

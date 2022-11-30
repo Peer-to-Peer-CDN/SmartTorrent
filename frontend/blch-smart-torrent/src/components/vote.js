@@ -1,3 +1,5 @@
+import { toast } from "react-hot-toast";
+
 const vote = async (hash, category) => {
     if (window.ethereum.isConnected()) {
         const transactionParameters = {
@@ -7,22 +9,16 @@ const vote = async (hash, category) => {
             value: '0x00',
             data: '0xc9a28cb9' + getZeros(24) + hash + getZeros(63) + category
         }
-
-        try {
-            // document.querySelector("#progress-bar").variant = "warning";
-            // document.querySelector("#progress-bar").now = 40;
-            await window.ethereum.request({
+        toast.promise(
+            window.ethereum.request({
                 method: "eth_sendTransaction",
                 params: [transactionParameters]
-            });
-            // document.querySelector("#progress-bar").variant = "success";
-            // document.querySelector("#progress-bar").now = 100;
-        } catch (error) {
-            // document.querySelector("#progress-bar").now = 0;
-            // document.querySelector("#progress-bar").variant = "danger";
+            }), {
+            loading: "Voting in progress",
+            success: "Voted successfully",
+            error: "Error voting, please try again later"
+        });
 
-        }
-        
     }
 }
 

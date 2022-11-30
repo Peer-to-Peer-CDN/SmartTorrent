@@ -35,12 +35,12 @@ Find use-case or idea for your app
 ## Requirements
 All requirements below must be met in order to pass this lecture.
 
-- [ ] A working prototype for your use-case
+- [x] A working prototype for your use-case
 - [x] Use latest stable releases of chosen libraries and frameworks
 - [x] Submission of a voting proposal, with previously known consequences and recipients (can be testnet)
 - [x] Onchain voting on proposal with at least 2 participants / identities (can be testnet)
 - [x] Successful vote needs to trigger something onchain. Can be an ERC20 or an NFT transfer (can be testnet)
-- [ ] Voting status and process need to be shown in the frontend
+- [x] Voting status and process need to be shown in the frontend
 - [x] The solution may use existing libraries and code, but those must open software software
 
 ## Hand-ins

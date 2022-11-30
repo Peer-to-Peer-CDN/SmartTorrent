@@ -51,14 +51,11 @@ const App = () => {
   };
 
 
-  // For now, 'eth_accounts' will continue to always return an array
   function handleAccountsChanged(accounts) {
     if (accounts.length === 0) {
-      // MetaMask is locked or the user has not connected any accounts
       toast.error('Please connect to MetaMask.');
     } else if (accounts[0] !== walletId) {
       setWalletId(accounts[0]);
-      // Do any other work!
     }
   }
 
