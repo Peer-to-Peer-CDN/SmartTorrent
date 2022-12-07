@@ -1,5 +1,4 @@
 import "./App.css";
-import React from "react";
 import { useState } from "react";
 import Dropzone from "./components/dropzone";
 import vote from "./components/vote"
@@ -14,7 +13,11 @@ const App = () => {
   const [walletId, setWalletId] = useState("wallet-id");
   const [malwareVotes, setMalwareVotes] = useState("malware-votes");
   const [copyrightVotes, setCopyrightVotes] = useState("copyright-votes");
-  const [blacklistedReason,setBlacklistedReason] = useState("blacklisted-reason");
+  const [blacklistedReason, setBlacklistedReason] = useState("blacklisted-reason");
+  const votingbox = document.querySelector("#voting-box");
+  const blacklistedbox = document.querySelector("#blacklisted-box");
+  const torrentbox = document.querySelector("#torrent-box");
+
   useEffect(() => {
     setHash("");
     setWalletId("");
@@ -23,6 +26,15 @@ const App = () => {
     setBlacklistedReason("");
   }, []);
 
+  const resetVotes = () => {
+      setMalwareVotes("");
+      setCopyrightVotes("");
+      setBlacklistedReason("");
+
+      votingbox.classList.remove("hidden");
+      blacklistedbox.classList.add("hidden");
+    };
+    
   const blacklistedReasonMap = {
     1: "Malware",
     2: "Copyright",
@@ -37,11 +49,11 @@ const App = () => {
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         setWalletId(result[0]);
         toast.success("Metamask connected");
-        document.querySelector("#torrent-box").style.visibility = "visible";
+        torrentbox.classList.remove("hidden");
       } catch (error) {
         toast.error("User denied account access");
-        document.querySelector("#voting-box").style.visibility = "hidden";
-        document.querySelector("#torrent-box").style.visibility = "hidden";
+        votingbox.classList.add("hidden");
+        torrentbox.classList.remove("hidden");
 
       }
     } else {
@@ -59,22 +71,21 @@ const App = () => {
   }
 
   const getBothVotes = async () => {
-    
+
     isBlacklisted(hash).then((result) => {
-        console.log("Result", parseInt(result, 16));
-        let intResult = parseInt(result, 16);
-        if (intResult > 0) {
-          setBlacklistedReason(blacklistedReasonMap[intResult]);
-          document.querySelector("#voting-box").classList.toggle("hidden");
-          document.querySelector("#blacklisted-box").classList.toggle("hidden");
-        }else{
-          getVotes(hash, 0).then((result) => {
-            setMalwareVotes("" + (parseInt(result, 16)));
-          });
-          getVotes(hash, 1).then((result) => {
-            setCopyrightVotes("" + parseInt(result, 16));
-          });
-        }
+      let intResult = parseInt(result, 16);
+      if (intResult > 0) {
+        setBlacklistedReason(blacklistedReasonMap[intResult]);
+        votingbox.classList.add("hidden");
+        blacklistedbox.classList.remove("hidden");
+      } else {
+        getVotes(hash, 0).then((result) => {
+          setMalwareVotes("" + (parseInt(result, 16)));
+        });
+        getVotes(hash, 1).then((result) => {
+          setCopyrightVotes("" + parseInt(result, 16));
+        });
+      }
     });
   }
 
@@ -89,13 +100,13 @@ const App = () => {
         </button>
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
-      <section id="torrent-box">
-        <Dropzone updateHash={setHash} />
+      <section id="torrent-box" className="hidden">
+        <Dropzone updateHash={setHash} resetVotes={resetVotes} />
       </section>
       <section id="blacklisted-box" className="hidden box blacklist">
         <h2 className="blacklist">Torrent is Blacklisted for {blacklistedReason}!</h2>
       </section>
-      <section id="voting-box" className="info box">
+      <section id="voting-box" className="hidden info box">
         <div className="votes">
           <button className="vote" onClick={() => getBothVotes()}>Get votes</button>
         </div>

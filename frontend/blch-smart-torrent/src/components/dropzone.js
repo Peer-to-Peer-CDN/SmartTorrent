@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 
 
-function Dropzone({ updateHash }) {
+function Dropzone({ updateHash, resetVotes }) {
   const [hash, setHash] = useState("hash");
 
   useEffect(() => {
@@ -28,12 +28,12 @@ function Dropzone({ updateHash }) {
         setHash(parsedTorrent.infoHash);
         updateHash(parsedTorrent.infoHash);
         toast.success("Torrent file loaded successfully");
-        document.querySelector("#voting-box").style.visibility = "visible";
+        resetVotes();
       };
 
       reader.readAsArrayBuffer(filesFiltered[0]);
     } else {
-      console.log("No valid file dropped");
+      toast.error("Please select a torrent file");
     }
   }, [updateHash]);
 

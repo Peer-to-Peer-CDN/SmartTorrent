@@ -89,11 +89,6 @@ p {
   margin: 30px;
 }
 
-#voting-box,
-#torrent-box {
-  visibility: hidden;
-}
-
 .vote {
   padding: 30px;
   display: flex;
