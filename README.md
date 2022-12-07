@@ -18,7 +18,31 @@ Required components ([detailed requirements](https://dsl.i.ost.ch/lect/hs22#chal
 - Contract for onchain voting
 - Second contract which processes the voting result
 
-# Voting Process
+# Technical Overview
+- Contract Language: Solidity
+- Ethereum Provider API: MetaMask
+- Used network: Goerli Testnet
+- Frontend: React
+- Language: JavaScript
+
+# System
+## Technology Decisions
+- The frontend framework React was chosen, because the team was already familiar with it.
+- MetaMask was used to communicate with the blockchain according to the lecturers' suggestion.
+- Solidity is the most commonly used contract language. Therefore, we used it.
+- We used the Goerli Testnet, because it is still supported after the Ethereum transition to proof of stake.
+
+## Libraries
+The following libraries were used in the project:
+- metamask/detect-provider
+- parse-torrent
+- react-dropzone
+- react-hot-toast
+
+## Components
+<img src="./images/components.png" alt="components.png" width="500"/>
+
+## Voting Process
 Possible process of voting with a blacklist entry:
 1. At first, a user needs to connect to his MetaMask account. In case of success, a file drop zone is displayed on the frontend.
 2. The user uploads a .torrent file and the web app extract its info hash.
@@ -39,7 +63,7 @@ Possible process of voting without a blacklist entry:
 
 ![sequence.png](./images/Sequence.png)
 
-# Local Execution on Testnet 
+## Local Execution on Testnet 
 1. Deploy TorrentBlackList.sol to Goerli testnet (owner address needed)
 2. Deploy SmartTorrent.sol to Goerli testnet (blacklist address needed)
 3. Change the contract addresses in your project
@@ -48,7 +72,7 @@ Possible process of voting without a blacklist entry:
 
 Step 1 - 3 can be skipped if the already deployed contracts should be used.
 
-## Contract information
+### Contract information
 The app currently interacts with the following contracts on the Goerli testnet:
 - Owner: [0xf232b2993dDa9Bde0157DFCD091496Ff62C0CeBb](https://goerli.etherscan.io/address/0xf232b2993dda9bde0157dfcd091496ff62c0cebb)
 - BlackList
