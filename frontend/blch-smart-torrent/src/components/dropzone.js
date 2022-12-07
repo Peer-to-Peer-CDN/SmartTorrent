@@ -35,7 +35,7 @@ function Dropzone({ updateHash, resetVotes }) {
     } else {
       toast.error("Please select a torrent file");
     }
-  }, [updateHash]);
+  }, [updateHash, resetVotes]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
