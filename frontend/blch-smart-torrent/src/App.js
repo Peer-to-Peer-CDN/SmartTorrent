@@ -34,7 +34,7 @@ const App = () => {
       votingbox.classList.remove("hidden");
       blacklistedbox.classList.add("hidden");
     };
-    
+
   const blacklistedReasonMap = {
     1: "Malware",
     2: "Copyright",
@@ -45,16 +45,16 @@ const App = () => {
     const provider = await detectEthereumProvider();
     if (provider) {
       try {
-        let result = await window.ethereum.enable();
+        let result = await window.ethereum.request({ method: 'eth_requestAccounts' });
         window.ethereum.on('accountsChanged', handleAccountsChanged);
         setWalletId(result[0]);
         toast.success("Metamask connected");
         torrentbox.classList.remove("hidden");
       } catch (error) {
+        console.log(error);
         toast.error("User denied account access");
         votingbox.classList.add("hidden");
-        torrentbox.classList.remove("hidden");
-
+        torrentbox.classList.add("hidden");
       }
     } else {
       toast.error("Metamask not installed");
