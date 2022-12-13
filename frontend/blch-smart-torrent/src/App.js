@@ -3,7 +3,7 @@ import { useState } from "react";
 import Dropzone from "./components/dropzone";
 import vote from "./components/vote"
 import { useEffect } from "react";
-import detectEthereumProvider from '@metamask/detect-provider'
+import detectEthereumProvider from "@metamask/detect-provider"
 import { getVotes, isBlacklisted } from "./components/getVotes";
 import { toast } from "react-hot-toast";
 
@@ -45,8 +45,8 @@ const App = () => {
     const provider = await detectEthereumProvider();
     if (provider) {
       try {
-        let result = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        let result = await window.ethereum.request({ method: "eth_requestAccounts" });
+        window.ethereum.on("accountsChanged", handleAccountsChanged);
         setWalletId(result[0]);
         toast.success("Metamask connected");
         torrentbox.classList.remove("hidden");
@@ -64,7 +64,7 @@ const App = () => {
 
   function handleAccountsChanged(accounts) {
     if (accounts.length === 0) {
-      toast.error('Please connect to MetaMask.');
+      toast.error("Please connect to MetaMask.");
     } else if (accounts[0] !== walletId) {
       setWalletId(accounts[0]);
     }
@@ -101,7 +101,7 @@ const App = () => {
         {walletId.length > 0 ? (<p>Wallet ID: {walletId}</p>) : ""}
       </div>
       <section id="torrent-box" className="hidden">
-        <Dropzone updateHash={setHash} resetVotes={resetVotes} />
+        <Dropzone updateHash={setHash} resetVotes={resetVotes} votingbox={votingbox}/>
       </section>
       <section id="blacklisted-box" className="hidden box blacklist">
         <h2 className="blacklist">Torrent is Blacklisted for {blacklistedReason}!</h2>

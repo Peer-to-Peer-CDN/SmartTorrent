@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 
 
-function Dropzone({ updateHash, resetVotes }) {
+function Dropzone({ updateHash, resetVotes, votingbox }) {
   const [hash, setHash] = useState("hash");
 
   useEffect(() => {
@@ -34,8 +34,11 @@ function Dropzone({ updateHash, resetVotes }) {
       reader.readAsArrayBuffer(filesFiltered[0]);
     } else {
       toast.error("Please select a torrent file");
+      votingbox.classList.add("hidden");
+      setHash("");
+      updateHash("");
     }
-  }, [updateHash, resetVotes]);
+  }, [updateHash, resetVotes, votingbox]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
