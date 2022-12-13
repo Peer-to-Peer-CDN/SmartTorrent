@@ -23,7 +23,7 @@ Required components ([detailed requirements](https://dsl.i.ost.ch/lect/hs22#chal
 - Ethereum Provider API: MetaMask
 - Used network: Goerli Testnet
 - Frontend: React
-- Language: JavaScript
+- Language: JavaScript/TypeScript
 
 # System
 ## Technology Decisions
